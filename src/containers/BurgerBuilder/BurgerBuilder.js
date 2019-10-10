@@ -3,6 +3,11 @@ import React,{Component} from 'react';
 import Aux from '../../hoc/Aux'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
+import OrderSummmary from '../../components/Burger/OrderSummary/OrderSummary'
+import Modal from '../../components/Layout/UI/Modal/Modal'
+
+
+import classes from './BurgerBuilder.module.css'
 
 const BASE_PRICE = 4
 const INGREDIENT_PRICES = {
@@ -22,6 +27,17 @@ class BurgerBuilder extends Component{
             meat:0,
         },
         totalPrice: BASE_PRICE,
+        canPurchase: false,
+        purchasing: false,
+    }
+
+    updatePurchaseState = (ingredients) => {
+        const purchaseable = Object.values(ingredients).reduce((x,y) => x+y) > 0
+        this.setState({canPurchase: purchaseable})
+    }
+
+    purchaseHandler = () =>{
+        this.setState({purchasing:true})
     }
 
     addIngredient = (type) => {
@@ -37,6 +53,7 @@ class BurgerBuilder extends Component{
        
        this.setState({ingredients:updatedIngredients})
        this.setState({totalPrice: updatedPrice})
+       this.updatePurchaseState(updatedIngredients)
     }
     
     removeIngredient = (type) => {
@@ -55,6 +72,7 @@ class BurgerBuilder extends Component{
        
        this.setState({ingredients:updatedIngredients})
        this.setState({totalPrice: updatedPrice})
+       this.updatePurchaseState(updatedIngredients)
 
     }
     render(){
@@ -64,13 +82,19 @@ class BurgerBuilder extends Component{
         }
         return (
             <Aux>
+                <Modal show={this.state.purchasing}>
+                    <OrderSummmary ingredients={this.state.ingredients}/>
+                 </Modal>
                 <Burger ingredients={this.state.ingredients}></Burger>
                 <BuildControls 
                     ingredientAdded={this.addIngredient}
                     ingredientRemoved={this.removeIngredient}
-                    ingredients={this.ingredients}
-                    disabledInfo={disabledInfo}/>
+                    ingredients={this.state.ingredients}
+                    disabledInfo={disabledInfo}
+                    totalPrice={this.state.totalPrice}/>
+                <button className={classes.OrderButton} disabled={!this.state.canPurchase} onClick={this.purchaseHandler}>Order Now</button>
             </Aux>
+
             
         )
     }

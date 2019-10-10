@@ -18,6 +18,7 @@ const buildControls = (props) =>{
             {/* {controls.forEach(cont =>
                 <BuildControl label={cont.label}/>
             )} */}
+            <p>Current Price: {props.totalPrice}</p>
             {controls.map(ctrl => 
                 <BuildControl key={ctrl.label} label={ctrl.label} 
                     added={() => props.ingredientAdded(ctrl.type)}
