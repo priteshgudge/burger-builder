@@ -4,7 +4,7 @@ import Aux from '../../hoc/Aux'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import OrderSummmary from '../../components/Burger/OrderSummary/OrderSummary'
-import Modal from '../../components/Layout/UI/Modal/Modal'
+import Modal from '../../components/UI/Modal/Modal'
 
 
 import classes from './BurgerBuilder.module.css'

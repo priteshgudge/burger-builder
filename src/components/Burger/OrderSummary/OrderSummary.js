@@ -1,6 +1,6 @@
 import React from 'react';
 import Aux from '../../../hoc/Aux'
-import Button from '../../Layout/UI/Button/Button';
+import Button from '../../UI/Button/Button';
 const orderSummary = (props) => {
     const ingredientSummary = Object.entries(props.ingredients).map(
         (key,value) => (<li key={key[0]}>
