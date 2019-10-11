@@ -1,34 +1,36 @@
-import React,{Component} from 'react';
-import Aux from '../../../hoc/Aux/Aux'
+import React, { Component } from 'react';
+
+import Aux from '../../../hoc/Aux/Aux';
 import Button from '../../UI/Button/Button';
 
-
-class OrderSummary extends Component{
-
-    componentWillUpdate(){
-        console.log("[Order Summary] WillUpdate")
+class OrderSummary extends Component {
+    // This could be a functional component, doesn't have to be a class
+    componentWillUpdate() {
+        console.log('[OrderSummary] WillUpdate');
     }
-    render(){
-        const ingredientSummary = Object.entries(this.props.ingredients).map(
-            (key,value) => (<li key={key[0]}>
-                <span 
-                    style={{"textTransform": 'capitalize'}}>{key[0]} </span>: {value}
-                </li>)
-        )
-       return( 
-          
-        <Aux>
-            <h3>Your Order</h3>
-            <p> Delicious burger with ingredients</p>
-            <ul>
-                {ingredientSummary}
-            </ul>
-            <p><strong>Total Price:{this.props.price} </strong></p>
-            <p>Continue to Checkout?</p>
-            <Button btnType="Danger" clicked={this.props.purchaseCancelled}>CANCEL</Button>
-            <Button btnType="Success" clicked={this.props.purchaseContinued}>CONTINUE</Button>
-        </Aux>
-       )
+
+    render () {
+        const ingredientSummary = Object.keys( this.props.ingredients )
+            .map( igKey => {
+                return (
+                    <li key={igKey}>
+                        <span style={{ textTransform: 'capitalize' }}>{igKey}</span>: {this.props.ingredients[igKey]}
+                    </li> );
+            } );
+
+        return (
+            <Aux>
+                <h3>Your Order</h3>
+                <p>A delicious burger with the following ingredients:</p>
+                <ul>
+                    {ingredientSummary}
+                </ul>
+                <p><strong>Total Price: {this.props.price.toFixed( 2 )}</strong></p>
+                <p>Continue to Checkout?</p>
+                <Button btnType="Danger" clicked={this.props.purchaseCancelled}>CANCEL</Button>
+                <Button btnType="Success" clicked={this.props.purchaseContinued}>CONTINUE</Button>
+            </Aux>
+        );
     }
 }
 
