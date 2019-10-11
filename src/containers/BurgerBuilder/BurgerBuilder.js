@@ -35,6 +35,8 @@ class BurgerBuilder extends Component{
     }
 
     componentDidMount() {
+        // For showing routes etc.
+        console.log(this.props)
         axios.get('https://react-complete-guide-bur-cdac2.firebaseio.com/ingredients.json')
             .then(response=>{
                 this.setState({ingredients:response.data})
@@ -56,36 +58,45 @@ class BurgerBuilder extends Component{
     }
     continuePurchaseHandler = () =>{
         //alert
-        this.setState({
-            loading: true
-        })
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: "Pritesh",
-                address:{
-                    street: "Street 1",
-                    zipCode: "411023",
-                    country: "IN"
-                },
-                email: "Test@test.com",
-                delivery: "Fastest"
-            }
+        // this.setState({
+        //     loading: true
+        // })
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: "Pritesh",
+        //         address:{
+        //             street: "Street 1",
+        //             zipCode: "411023",
+        //             country: "IN"
+        //         },
+        //         email: "Test@test.com",
+        //         delivery: "Fastest"
+        //     }
+        // }
+        // axios.post('/orders.json',order)
+        //     .then(
+        //         response => {
+        //             console.log(response)
+        //             this.setState({loading: false,purchasing:false})
+        //         }
+        //     )
+        //     .catch(
+        //         error =>  {
+        //             console.log(error)
+        //             this.setState({loading: false,purchasing:false})
+        //         }
+        //     )
+        const queryParams = [];
+        for (let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
-        axios.post('/orders.json',order)
-            .then(
-                response => {
-                    console.log(response)
-                    this.setState({loading: false,purchasing:false})
-                }
-            )
-            .catch(
-                error =>  {
-                    console.log(error)
-                    this.setState({loading: false,purchasing:false})
-                }
-            )
+        const queryString = queryParams.join('&')
+        this.props.history.push({
+            pathname: '/checkout',
+            search:'?'+queryString
+        })
 
     }
     addIngredient = (type) => {
